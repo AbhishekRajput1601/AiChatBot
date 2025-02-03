@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
     const { user, setUser } = useContext(UserContext);
-    const navigate = useNavigate();
+    const navigate = useNavigate(); // Hook from react-router-dom
 
     const handleAuthClick = () => {
         if (token) {
