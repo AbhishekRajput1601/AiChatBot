@@ -59,11 +59,6 @@ io.use(async (socket, next) => {
 io.on('connection', socket => {
     socket.roomId = socket.project._id.toString()
 
-
-    console.log('a user connected');
-
-
-
     socket.join(socket.roomId);
 
     socket.on('project-message', async data => {
@@ -106,5 +101,5 @@ io.on('connection', socket => {
 
 
 server.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+    console.log(`Server is running on port ${port} ✅`);
 })

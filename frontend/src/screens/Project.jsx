@@ -30,7 +30,9 @@ const Project = () => {
 
     const [ isSidePanelOpen, setIsSidePanelOpen ] = useState(false)
     const [ isModalOpen, setIsModalOpen ] = useState(false)
+    const [ isRemoveModalOpen, setIsRemoveModalOpen ] = useState(false)
     const [ selectedUserId, setSelectedUserId ] = useState(new Set()) // Initialized as Set
+    const [ selectedUserIdToRemove, setSelectedUserIdToRemove ] = useState(new Set())
     const [ project, setProject ] = useState(location.state.project)
     const [ message, setMessage ] = useState('')
     const { user } = useContext(UserContext)
@@ -59,10 +61,15 @@ const Project = () => {
 
             return newSelectedUserId;
         });
-
-
     }
 
+    const handleRemoveUserClick = (id) => {
+        setSelectedUserIdToRemove(prev => {
+            const updated = new Set(prev);
+            updated.has(id) ? updated.delete(id) : updated.add(id);
+            return updated;
+        });
+    }
 
     function addCollaborators() {
 
@@ -77,6 +84,18 @@ const Project = () => {
             console.log(err)
         })
 
+    }
+
+    function removeCollaborators() {
+        axios.put("/projects/remove-user", {
+            projectId: location.state.project._id,
+            users: Array.from(selectedUserIdToRemove)
+        }).then(res => {
+            console.log(res.data);
+            setIsRemoveModalOpen(false);
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
     const send = () => {
@@ -190,7 +209,10 @@ const Project = () => {
                 <header className='flex justify-between items-center p-2 px-4 w-full bg-slate-100 absolute z-10 top-0'>
                     <button className='flex gap-2' onClick={() => setIsModalOpen(true)}>
                         <i className="ri-add-fill mr-1"></i>
-                        <p>Add collaborator</p>
+                        <p>Add User</p>
+                    </button>
+                    <button onClick={() => setIsRemoveModalOpen(true)}>
+                        <i className="ri-user-unfollow-fill"></i> Remove User
                     </button>
                     <button onClick={() => setIsSidePanelOpen(!isSidePanelOpen)} className='p-2'>
                         <i className="ri-group-fill"></i>
@@ -415,6 +437,37 @@ const Project = () => {
                             onClick={addCollaborators}
                             className='absolute bottom-4 left-1/2 transform -translate-x-1/2 px-4 py-2 bg-blue-600 text-white rounded-md'>
                             Add Collaborators
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {isRemoveModalOpen && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <div className="bg-white p-4 rounded-md w-96 max-w-full relative">
+                        <header className='flex justify-between items-center mb-4'>
+                            <h2 className='text-xl font-semibold'>Remove User</h2>
+                            <button onClick={() => setIsRemoveModalOpen(false)} className='p-2'>
+                                <i className="ri-close-fill"></i>
+                            </button>
+                        </header>
+                        <div className="users-list flex flex-col gap-2 mb-16 max-h-96 overflow-auto">
+                            {project.users?.map(u => (
+                                <div key={u._id}
+                                     onClick={() => handleRemoveUserClick(u._id)}
+                                     className={`cursor-pointer hover:bg-slate-200 
+                                     ${selectedUserIdToRemove.has(u._id) ? 'bg-slate-200' : ''} 
+                                     p-2 flex gap-2 items-center`}>
+                                    <div className='aspect-square relative rounded-full w-fit h-fit flex items-center justify-center p-5 text-white bg-slate-600'>
+                                        <i className="ri-user-fill absolute"></i>
+                                    </div>
+                                    <h1 className='font-semibold text-lg'>{u.email}</h1>
+                                </div>
+                            ))}
+                        </div>
+                        <button onClick={removeCollaborators}
+                                className='absolute bottom-4 left-1/2 transform -translate-x-1/2 px-4 py-2 bg-blue-600 text-white rounded-md'>
+                            Remove Collaborators
                         </button>
                     </div>
                 </div>
