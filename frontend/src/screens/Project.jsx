@@ -31,7 +31,7 @@ const Project = () => {
     const [ isSidePanelOpen, setIsSidePanelOpen ] = useState(false)
     const [ isModalOpen, setIsModalOpen ] = useState(false)
     const [ isRemoveModalOpen, setIsRemoveModalOpen ] = useState(false)
-    const [ selectedUserId, setSelectedUserId ] = useState(new Set()) // Initialized as Set
+    const [ selectedUserId, setSelectedUserId ] = useState(new Set()) 
     const [ selectedUserIdToRemove, setSelectedUserIdToRemove ] = useState(new Set())
     const [ project, setProject ] = useState(location.state.project)
     const [ message, setMessage ] = useState('')
@@ -39,7 +39,7 @@ const Project = () => {
     const messageBox = React.createRef()
 
     const [ users, setUsers ] = useState([])
-    const [ messages, setMessages ] = useState([]) // New state variable for messages
+    const [ messages, setMessages ] = useState([]) 
     const [ fileTree, setFileTree ] = useState({})
 
     const [ currentFile, setCurrentFile ] = useState(null)
@@ -104,7 +104,7 @@ const Project = () => {
             message,
             sender: user
         })
-        setMessages(prevMessages => [ ...prevMessages, { sender: user, message } ]) // Update messages state
+        setMessages(prevMessages => [ ...prevMessages, { sender: user, message } ]) 
         setMessage("")
 
     }
@@ -196,25 +196,40 @@ const Project = () => {
         })
     }
 
-
-    // Removed appendIncomingMessage and appendOutgoingMessage functions
-
     function scrollToBottom() {
         messageBox.current.scrollTop = messageBox.current.scrollHeight
+    }
+
+    const openAddUserModal = () => {
+        setIsModalOpen(true);
+        setIsRemoveModalOpen(false);
+        setIsSidePanelOpen(false);
+    }
+
+    const openRemoveUserModal = () => {
+        setIsRemoveModalOpen(true);
+        setIsModalOpen(false);
+        setIsSidePanelOpen(false);
+    }
+
+    const openSidePanel = () => {
+        setIsSidePanelOpen(true);
+        setIsModalOpen(false);
+        setIsRemoveModalOpen(false);
     }
 
     return (
         <main className='h-screen w-screen flex'>
             <section className="left relative flex flex-col h-screen min-w-96 bg-slate-300">
                 <header className='flex justify-between items-center p-2 px-4 w-full bg-slate-100 absolute z-10 top-0'>
-                    <button className='flex gap-2' onClick={() => setIsModalOpen(true)}>
-                        <i className="ri-add-fill mr-1"></i>
+                    <button className='flex gap-2' onClick={openAddUserModal}>
+                    <i className="ri-user-add-fill"></i>
                         <p>Add User</p>
                     </button>
-                    <button onClick={() => setIsRemoveModalOpen(true)}>
+                    <button onClick={openRemoveUserModal}>
                         <i className="ri-user-unfollow-fill"></i> Remove User
                     </button>
-                    <button onClick={() => setIsSidePanelOpen(!isSidePanelOpen)} className='p-2'>
+                    <button onClick={openSidePanel} className='p-2'>
                         <i className="ri-group-fill"></i>
                     </button>
                 </header>
@@ -269,7 +284,6 @@ const Project = () => {
                                 </div>
                             )
 
-
                         })}
                     </div>
                 </div>
@@ -291,8 +305,7 @@ const Project = () => {
                                     <p
                                         className='font-semibold text-lg'
                                     >{file}</p>
-                                </button>))
-
+                            </button>))
                         }
                     </div>
 
@@ -319,86 +332,86 @@ const Project = () => {
                         </div>
 
                         <div className="actions flex gap-2">
-                            <button
-                                onClick={async () => {
-                                    await webContainer.mount(fileTree)
+                    <button
+                        onClick={async () => {
+                            await webContainer.mount(fileTree)
 
 
-                                    const installProcess = await webContainer.spawn("npm", [ "install" ])
+                            const installProcess = await webContainer.spawn("npm", [ "install" ])
 
 
 
-                                    installProcess.output.pipeTo(new WritableStream({
-                                        write(chunk) {
-                                            console.log(chunk)
-                                        }
-                                    }))
+                            installProcess.output.pipeTo(new WritableStream({
+                                write(chunk) {
+                                    console.log(chunk)
+                                }
+                            }))
 
-                                    if (runProcess) {
-                                        runProcess.kill()
-                                    }
+                            if (runProcess) {
+                                runProcess.kill()
+                            }
 
-                                    let tempRunProcess = await webContainer.spawn("npm", [ "start" ]);
+                            let tempRunProcess = await webContainer.spawn("npm", [ "start" ]);
 
-                                    tempRunProcess.output.pipeTo(new WritableStream({
-                                        write(chunk) {
-                                            console.log(chunk)
-                                        }
-                                    }))
+                            tempRunProcess.output.pipeTo(new WritableStream({
+                                write(chunk) {
+                                    console.log(chunk)
+                                }
+                            }))
 
-                                    setRunProcess(tempRunProcess)
+                            setRunProcess(tempRunProcess)
 
-                                    webContainer.on('server-ready', (port, url) => {
-                                        console.log(port, url)
-                                        setIframeUrl(url)
-                                    })
+                            webContainer.on('server-ready', (port, url) => {
+                                console.log(port, url)
+                                setIframeUrl(url)
+                            })
 
-                                }}
-                                className='p-2 px-4 bg-slate-300 text-white'
-                            >
-                                run
-                            </button>
+                        }}
+                        className='p-2 px-4 bg-slate-300 text-white'
+                    >
+                        run
+                    </button>
 
 
                         </div>
                     </div>
-                    <div className="bottom flex flex-grow max-w-full shrink overflow-auto">
-                        {
-                            fileTree[ currentFile ] && (
-                                <div className="code-editor-area h-full overflow-auto flex-grow bg-slate-50">
-                                    <pre
-                                        className="hljs h-full">
-                                        <code
-                                            className="hljs h-full outline-none"
-                                            contentEditable
-                                            suppressContentEditableWarning
-                                            onBlur={(e) => {
-                                                const updatedContent = e.target.innerText;
-                                                const ft = {
-                                                    ...fileTree,
-                                                    [ currentFile ]: {
-                                                        file: {
-                                                            contents: updatedContent
-                                                        }
-                                                    }
-                                                }
-                                                setFileTree(ft)
-                                                saveFileTree(ft)
-                                            }}
-                                            dangerouslySetInnerHTML={{ __html: hljs.highlight('javascript', fileTree[ currentFile ].file.contents).value }}
-                                            style={{
-                                                whiteSpace: 'pre-wrap',
-                                                paddingBottom: '25rem',
-                                                counterSet: 'line-numbering',
-                                            }}
-                                        />
-                                    </pre>
-                                </div>
-                            )
-                        }
-                    </div>
+            <div className="bottom flex flex-grow max-w-full shrink overflow-auto">
+                {
+                    fileTree[ currentFile ] && (
+                        <div className="code-editor-area h-full overflow-auto flex-grow bg-slate-50">
+                    <pre
+                        className="hljs h-full">
+                        <code
+                            className="hljs h-full outline-none"
+                            contentEditable
+                            suppressContentEditableWarning
+                            onBlur={(e) => {
+                                const updatedContent = e.target.innerText;
+                                const ft = {
+                                    ...fileTree,
+                                    [ currentFile ]: {
+                                        file: {
+                                            contents: updatedContent
+                                        }
+                                    }
+                                }
+                                setFileTree(ft)
+                                saveFileTree(ft)
+                            }}
+                            dangerouslySetInnerHTML={{ __html: hljs.highlight('javascript', fileTree[ currentFile ].file.contents).value }}
+                            style={{
+                                whiteSpace: 'pre-wrap',
+                                paddingBottom: '25rem',
+                                counterSet: 'line-numbering',
+                            }}
+                        />
+                    </pre>
+                        </div>
+                    )
+                }
+            </div>
 
-                </div>
+        </div>
 
                 {iframeUrl && webContainer &&
                     (<div className="flex min-w-96 flex-col h-full">
