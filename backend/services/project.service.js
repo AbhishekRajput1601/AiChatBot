@@ -53,6 +53,22 @@ export const deleteProject = async ({ projectId, userId }) => {
     return { message: "Project deleted successfully" };
 };
 
+export const getAllProjectsOfUserByUserId = async ({ userId }) => {
+    if (!userId) {
+        throw new Error("userId is required");
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+        throw new Error("Invalid userId");
+    }
+
+    const projects = await projectModel.find({
+        users: userId
+    });
+
+    return projects;
+};
+
 export const getAllProjectByUserId = async ({ userId }) => {
     if (!userId) {
         throw new Error('UserId is required')

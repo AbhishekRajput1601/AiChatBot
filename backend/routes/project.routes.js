@@ -16,6 +16,11 @@ router.delete('/delete/:projectId',
     projectController.deleteProject
 )
 
+router.get('/allProjects/:userId',
+    authMiddleWare.authUser,
+    projectController.getAllProjectsOfUserByUserId
+)
+
 router.get('/all',
     authMiddleWare.authUser,
     projectController.getAllProject

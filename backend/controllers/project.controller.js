@@ -70,6 +70,21 @@ export const getAllProject = async (req, res) => {
     }
 }
 
+export const getAllProjectsOfUserByUserId = async (req, res) => {
+    try {
+        const loggedInUser = await userModel.findOne({ email: req.user.email });
+        const userId = loggedInUser._id;
+
+        const projects = await projectService.getAllProjectsOfUserByUserId({ userId });
+
+        return res.status(200).json({ projects });
+
+    } catch (err) {
+        console.log(err);
+        res.status(400).json({ error: err.message });
+    }
+};
+
 export const getAllUsersOfProjectById = async (req, res) => {
     const { projectId } = req.params;
 

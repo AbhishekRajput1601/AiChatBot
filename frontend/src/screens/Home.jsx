@@ -30,7 +30,9 @@ const Home = () => {
   }
 
   const fetchProjects = () => {
-      axios.get('/projects/all')
+     console.log(user._id);
+     
+      axios.get(`/projects/allProjects/${user._id}`)
           .then((res) => {
               setProjects(res.data.projects);
           })
