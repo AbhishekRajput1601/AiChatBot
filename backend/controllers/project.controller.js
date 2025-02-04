@@ -29,7 +29,7 @@ export const createProject = async (req, res) => {
 }
 
 export const deleteProject = async (req, res) => {
-    const { projectId } = req.body;
+    const { projectId } = req.params; // Use req.params instead of req.body
 
     try {
         const loggedInUser = await userModel.findOne({ email: req.user.email });
@@ -47,7 +47,7 @@ export const deleteProject = async (req, res) => {
         console.log(err);
         res.status(400).json({ error: err.message });
     }
-}
+};
 
 export const getAllProject = async (req, res) => {
     try {

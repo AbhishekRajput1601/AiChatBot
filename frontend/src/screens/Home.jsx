@@ -39,6 +39,18 @@ const Home = () => {
           });
   };
 
+  const deleteProject = (projectId) => {
+      axios
+        .delete(`/projects/delete/${projectId}`)
+        .then((res) => {
+          console.log(res.data.message || 'Project deleted successfully');
+          fetchProjects(); // Refresh the projects list after deletion
+        })
+        .catch((err) => {
+          console.error('Error deleting project:', err.response?.data || err.message);
+        });
+  };
+
   useEffect(() => {
       fetchProjects();
   }, []);
@@ -46,7 +58,7 @@ const Home = () => {
   return (
     <main className="p-6 bg-gray-50 min-h-screen">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Welcome, {user?.name || 'Devloper'}!</h1>
+        <h1 className="text-2xl font-bold text-gray-800">Welcome, {user?.name || 'Developer'}!</h1>
         <button
           onClick={() => setIsModalOpen(true)}
           className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition"
@@ -59,13 +71,26 @@ const Home = () => {
         {projects.map((project) => (
           <div
             key={project._id}
-            onClick={() => navigate(`/project`, { state: { project } })}
-            className="p-4 bg-white rounded-lg shadow hover:shadow-lg transition cursor-pointer"
+            className="relative p-4 bg-white rounded-lg shadow hover:shadow-lg transition"
           >
-            <h2 className="text-lg font-semibold text-gray-800 mb-2">{project.name}</h2>
-            <p className="text-gray-600">
-              <i className="ri-user-line"></i> Collaborators: {project.users.length}
-            </p>
+            <div
+              onClick={() => navigate(`/project`, { state: { project } })}
+              className="cursor-pointer"
+            >
+              <h2 className="text-lg font-semibold text-gray-800 mb-2">{project.name}</h2>
+              <p className="text-gray-600">
+                <i className="ri-user-line"></i> Collaborators: {project.users.length}
+              </p>
+            </div>
+            <button
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent triggering the project navigation
+                deleteProject(project._id);
+              }}
+              className="absolute top-2 right-2 px-2 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700 transition"
+            >
+              Delete
+            </button>
           </div>
         ))}
       </div>
