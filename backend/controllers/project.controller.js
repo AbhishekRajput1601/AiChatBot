@@ -160,8 +160,6 @@ export const removeUserFromProject = async (req, res) => {
             userId: loggedInUser._id
         });
 
-        console.log("project",project);
-
         if (!project) {
             return res.status(404).json({ error: 'Project not found or user not authorized' });
         }

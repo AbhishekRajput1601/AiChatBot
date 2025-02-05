@@ -49,6 +49,7 @@ const Project = () => {
     const [ iframeUrl, setIframeUrl ] = useState(null)
 
     const [ runProcess, setRunProcess ] = useState(null)
+    const [userChangeTrigger, setUserChangeTrigger] = useState(false);
 
     const handleUserClick = (id) => {
         setSelectedUserId(prevSelectedUserId => {
@@ -79,6 +80,7 @@ const Project = () => {
         }).then(res => {
             console.log(res.data)
             setIsModalOpen(false)
+            setUserChangeTrigger(prev => !prev);
 
         }).catch(err => {
             console.log(err)
@@ -93,6 +95,7 @@ const Project = () => {
         }).then(res => {
             console.log(res.data);
             setIsRemoveModalOpen(false);
+            setUserChangeTrigger(prev => !prev);
         }).catch(err => {
             console.log(err);
         });
@@ -184,6 +187,14 @@ const Project = () => {
         })
 
     }, [])
+
+    useEffect(() => {
+        axios.get(`/projects/get-project/${location.state.project._id}`)
+            .then(res => {
+                setProject(res.data.project);
+            })
+            .catch(err => console.log(err));
+    }, [userChangeTrigger]);
 
     function saveFileTree(ft) {
         axios.put('/projects/update-file-tree', {
