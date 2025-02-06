@@ -1,66 +1,73 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { UserContext } from '../context/user.context';
-import axios from '../config/axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useState, useEffect } from "react";
+import { UserContext } from "../context/user.context";
+import axios from "../config/axios";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const { user } = useContext(UserContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [projectName, setProjectName] = useState('');
+  const [projectName, setProjectName] = useState("");
   const [projects, setProjects] = useState([]);
 
   const navigate = useNavigate();
 
   function createProject(e) {
-      e.preventDefault();
-      console.log({ projectName });
+    e.preventDefault();
+    console.log({ projectName });
 
-      axios.post('/projects/create', {
-          name: projectName,
+    axios
+      .post("/projects/create", {
+        name: projectName,
       })
-          .then((res) => {
-              console.log(res);
-              setIsModalOpen(false);
-              setProjectName(''); // Clear the input field
-              fetchProjects(); // Refresh the projects list
-          })
-          .catch((error) => {
-              console.log(error);
-          });
+      .then((res) => {
+        console.log(res);
+        setIsModalOpen(false);
+        setProjectName(""); // Clear the input field
+        fetchProjects(); // Refresh the projects list
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   const fetchProjects = () => {
-     console.log(user._id);
-     
-      axios.get(`/projects/allProjects/${user._id}`)
-          .then((res) => {
-              setProjects(res.data.projects);
-          })
-          .catch(err => {
-              console.log(err);
-          });
+    console.log(user._id);
+
+    axios
+      .get(`/projects/allProjects/${user._id}`)
+      .then((res) => {
+        setProjects(res.data.projects);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const deleteProject = (projectId) => {
-      axios
-        .delete(`/projects/delete/${projectId}`)
-        .then((res) => {
-          console.log(res.data.message || 'Project deleted successfully');
-          fetchProjects(); // Refresh the projects list after deletion
-        })
-        .catch((err) => {
-          console.error('Error deleting project:', err.response?.data || err.message);
-        });
+    axios
+      .delete(`/projects/delete/${projectId}`)
+      .then((res) => {
+        console.log(res.data.message || "Project deleted successfully");
+        fetchProjects(); // Refresh the projects list after deletion
+      })
+      .catch((err) => {
+        console.error(
+          "Error deleting project:",
+          err.response?.data || err.message
+        );
+      });
   };
 
   useEffect(() => {
-      fetchProjects();
+    fetchProjects();
   }, []);
 
   return (
     <main className="p-6 bg-gray-50 min-h-screen">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Welcome, {user?.name || 'Developer'}!</h1>
+        <h1 className="text-2xl font-bold text-gray-800">
+          Welcome, {user?.name || "Developer"}!
+        </h1>
         <button
           onClick={() => setIsModalOpen(true)}
           className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition"
@@ -79,9 +86,12 @@ const Home = () => {
               onClick={() => navigate(`/project`, { state: { project } })}
               className="cursor-pointer"
             >
-              <h2 className="text-lg font-semibold text-gray-800 mb-2">{project.name}</h2>
+              <h2 className="text-lg font-semibold text-gray-800 mb-2">
+                {project.name}
+              </h2>
               <p className="text-gray-600">
-                <i className="ri-user-line"></i> Collaborators: {project.users.length}
+                <i className="ri-user-line"></i> Collaborators:{" "}
+                {project.users.length}
               </p>
             </div>
             <button
@@ -100,10 +110,14 @@ const Home = () => {
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">Create New Project</h2>
+            <h2 className="text-xl font-bold text-gray-800 mb-4">
+              Create New Project
+            </h2>
             <form onSubmit={createProject}>
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Project Name</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Project Name
+                </label>
                 <input
                   type="text"
                   value={projectName}
