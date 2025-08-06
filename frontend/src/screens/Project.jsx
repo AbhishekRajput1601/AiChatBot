@@ -455,11 +455,11 @@ const Project = () => {
               </button>
             </header>
             <div className="users-list flex flex-col gap-2 mb-16 max-h-96 overflow-auto">
-              {users.map((user) => (
+              {users && users.map((user) => (
                 <div
-                  key={user.id}
+                  key={user._id}
                   className={`user cursor-pointer hover:bg-slate-200 ${
-                    Array.from(selectedUserId).indexOf(user._id) != -1
+                    Array.from(selectedUserId).indexOf(user._id) !== -1
                       ? "bg-slate-200"
                       : ""
                   } p-2 flex gap-2 items-center`}
@@ -495,7 +495,7 @@ const Project = () => {
               </button>
             </header>
             <div className="users-list flex flex-col gap-2 mb-16 max-h-96 overflow-auto">
-              {project.users?.map((u) => (
+              {project.users && project.users.map((u) => (
                 <div
                   key={u._id}
                   onClick={() => handleRemoveUserClick(u._id)}

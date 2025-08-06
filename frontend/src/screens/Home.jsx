@@ -105,7 +105,7 @@ const Home = () => {
           <div className="flex justify-between items-center h-16">
             {/* Logo/Brand */}
             <div className="flex items-center">
-              <h1 className="text-3xl font-bold text-blue-800">CodeMate</h1>
+              <h1 className="text-3xl font-bold text-blue-700">CodeMate</h1>
             </div>
 
             {/* Navigation Links */}
@@ -114,8 +114,8 @@ const Home = () => {
                 onClick={() => setActiveTab("projects")}
                 className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                   activeTab === "projects"
-                    ? "bg-blue-100 text-blue-700"
-                    : "text-gray-500 hover:text-gray-700"
+                    ? "bg-blue-100 text-blue-700 text-xl font-bold"
+                    : "text-black hover:text-gray-700 text-xl font-bold"
                 }`}
               >
                 Projects
@@ -124,8 +124,8 @@ const Home = () => {
                 onClick={() => setActiveTab("users")}
                 className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                   activeTab === "users"
-                    ? "bg-blue-100 text-blue-700"
-                    : "text-gray-500 hover:text-gray-700"
+                    ? "bg-blue-100 text-blue-700 text-xl font-bold"
+                    : "text-black hover:text-gray-700 text-xl font-bold"
                 }`}
               >
                 Users
