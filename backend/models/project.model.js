@@ -9,6 +9,12 @@ const projectSchema = new mongoose.Schema({
     unique: [true, "Project name must be unique"],
   },
 
+  description: {
+    type: String,
+    default: "",
+    trim: true,
+  },
+
   users: [
     {
       type: mongoose.Schema.Types.ObjectId, // user id from user model

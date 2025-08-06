@@ -208,3 +208,27 @@ export const updateFileTree = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
+
+export const updateDescription = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  try {
+    const { projectId, description } = req.body;
+
+    const project = await projectService.updateDescription({
+      projectId,
+      description,
+    });
+
+    return res.status(200).json({
+      project,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ error: err.message });
+  }
+};

@@ -455,22 +455,23 @@ const Project = () => {
               </button>
             </header>
             <div className="users-list flex flex-col gap-2 mb-16 max-h-96 overflow-auto">
-              {users && users.map((user) => (
-                <div
-                  key={user._id}
-                  className={`user cursor-pointer hover:bg-slate-200 ${
-                    Array.from(selectedUserId).indexOf(user._id) !== -1
-                      ? "bg-slate-200"
-                      : ""
-                  } p-2 flex gap-2 items-center`}
-                  onClick={() => handleUserClick(user._id)}
-                >
-                  <div className="aspect-square relative rounded-full w-fit h-fit flex items-center justify-center p-5 text-white bg-slate-600">
-                    <i className="ri-user-fill absolute"></i>
+              {users &&
+                users.map((user) => (
+                  <div
+                    key={user._id}
+                    className={`user cursor-pointer hover:bg-slate-200 ${
+                      Array.from(selectedUserId).indexOf(user._id) !== -1
+                        ? "bg-slate-200"
+                        : ""
+                    } p-2 flex gap-2 items-center`}
+                    onClick={() => handleUserClick(user._id)}
+                  >
+                    <div className="aspect-square relative rounded-full w-fit h-fit flex items-center justify-center p-5 text-white bg-slate-600">
+                      <i className="ri-user-fill absolute"></i>
+                    </div>
+                    <h1 className="font-semibold text-lg">{user.email}</h1>
                   </div>
-                  <h1 className="font-semibold text-lg">{user.email}</h1>
-                </div>
-              ))}
+                ))}
             </div>
             <button
               onClick={addCollaborators}
@@ -495,24 +496,25 @@ const Project = () => {
               </button>
             </header>
             <div className="users-list flex flex-col gap-2 mb-16 max-h-96 overflow-auto">
-              {project.users && project.users.map((u) => (
-                <div
-                  key={u._id}
-                  onClick={() => handleRemoveUserClick(u._id)}
-                  className={`cursor-pointer hover:bg-slate-200 
+              {project.users &&
+                project.users.map((u) => (
+                  <div
+                    key={u._id}
+                    onClick={() => handleRemoveUserClick(u._id)}
+                    className={`cursor-pointer hover:bg-slate-200 
                                      ${
                                        selectedUserIdToRemove.has(u._id)
                                          ? "bg-slate-200"
                                          : ""
                                      } 
                                      p-2 flex gap-2 items-center`}
-                >
-                  <div className="aspect-square relative rounded-full w-fit h-fit flex items-center justify-center p-5 text-white bg-slate-600">
-                    <i className="ri-user-fill absolute"></i>
+                  >
+                    <div className="aspect-square relative rounded-full w-fit h-fit flex items-center justify-center p-5 text-white bg-slate-600">
+                      <i className="ri-user-fill absolute"></i>
+                    </div>
+                    <h1 className="font-semibold text-lg">{u.email}</h1>
                   </div>
-                  <h1 className="font-semibold text-lg">{u.email}</h1>
-                </div>
-              ))}
+                ))}
             </div>
             <button
               onClick={removeCollaborators}

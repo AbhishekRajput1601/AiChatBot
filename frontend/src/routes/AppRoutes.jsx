@@ -4,6 +4,7 @@ import Login from "../screens/Login";
 import Register from "../screens/Register";
 import Home from "../screens/Home";
 import Project from "../screens/Project";
+import ProjectDetails from "../screens/ProjectDetails";
 import AddUserToProject from "../screens/AddUserToProject";
 import UserAuth from "../auth/UserAuth";
 import Logout from "../screens/Logout";
@@ -44,6 +45,14 @@ const AppRoutes = () => {
           element={
             <UserAuth>
               <Project />
+            </UserAuth>
+          }
+        />
+        <Route
+          path="/project-details"
+          element={
+            <UserAuth>
+              <ProjectDetails />
             </UserAuth>
           }
         />

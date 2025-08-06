@@ -72,4 +72,12 @@ router.put(
   projectController.updateFileTree
 );
 
+router.put(
+  "/update-description",
+  authMiddleWare.authUser,
+  body("projectId").isString().withMessage("Project ID is required"),
+  body("description").isString().withMessage("Description must be a string"),
+  projectController.updateDescription
+);
+
 export default router;

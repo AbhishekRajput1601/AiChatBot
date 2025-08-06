@@ -58,9 +58,9 @@ const Home = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
     setUser(null);
-    navigate('/login');
+    navigate("/login");
   };
 
   const deleteProject = (projectId) => {
@@ -86,14 +86,14 @@ const Home = () => {
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (isUserDropdownOpen && !event.target.closest('.user-dropdown')) {
+      if (isUserDropdownOpen && !event.target.closest(".user-dropdown")) {
         setIsUserDropdownOpen(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isUserDropdownOpen]);
 
@@ -144,9 +144,11 @@ const Home = () => {
                 <span className="hidden md:block text-gray-700 font-medium">
                   {user?.email || "User"}
                 </span>
-                <i className={`ri-arrow-down-s-line text-gray-400 transition-transform ${
-                  isUserDropdownOpen ? "rotate-180" : ""
-                }`}></i>
+                <i
+                  className={`ri-arrow-down-s-line text-gray-400 transition-transform ${
+                    isUserDropdownOpen ? "rotate-180" : ""
+                  }`}
+                ></i>
               </button>
 
               {/* User Dropdown */}
@@ -178,13 +180,13 @@ const Home = () => {
             <h1 className="text-3xl font-bold text-gray-900">
               {activeTab === "projects" ? "My Projects" : "All Users"}
             </h1>
-            <p className="text-gray-600 mt-1">
-              {activeTab === "projects" 
-                ? "Manage and create your collaborative projects" 
+            <p className="text-gray-600 mt-1 font-bold text-lg">
+              {activeTab === "projects"
+                ? "Manage and create your collaborative projects"
                 : "Connect with other developers"}
             </p>
           </div>
-          
+
           {activeTab === "projects" && (
             <button
               onClick={() => setIsModalOpen(true)}
@@ -203,8 +205,12 @@ const Home = () => {
             {projects.length === 0 ? (
               <div className="col-span-full text-center py-12">
                 <i className="ri-folder-line text-6xl text-gray-300 mb-4"></i>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No projects yet</h3>
-                <p className="text-gray-500 mb-4">Get started by creating your first project</p>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                  No projects yet
+                </h3>
+                <p className="text-gray-500 mb-4">
+                  Get started by creating your first project
+                </p>
                 <button
                   onClick={() => setIsModalOpen(true)}
                   className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
@@ -219,7 +225,7 @@ const Home = () => {
                   className="relative bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow border border-gray-200"
                 >
                   <div
-                    onClick={() => navigate(`/project`, { state: { project } })}
+                    onClick={() => navigate(`/project-details`, { state: { project } })}
                     className="cursor-pointer p-6"
                   >
                     <div className="flex items-center justify-between mb-3">
@@ -230,7 +236,10 @@ const Home = () => {
                     </div>
                     <div className="flex items-center text-gray-600 text-sm">
                       <i className="ri-team-line mr-2"></i>
-                      <span>{project.users.length} collaborator{project.users.length !== 1 ? 's' : ''}</span>
+                      <span>
+                        {project.users.length} collaborator
+                        {project.users.length !== 1 ? "s" : ""}
+                      </span>
                     </div>
                     <div className="mt-4 flex items-center text-gray-500 text-xs">
                       <i className="ri-time-line mr-1"></i>
@@ -257,15 +266,23 @@ const Home = () => {
             {users.length === 0 ? (
               <div className="col-span-full text-center py-12">
                 <i className="ri-user-line text-6xl text-gray-300 mb-4"></i>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No users found</h3>
-                <p className="text-gray-500">Check back later for more developers</p>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                  No users found
+                </h3>
+                <p className="text-gray-500">
+                  Check back later for more developers
+                </p>
               </div>
             ) : (
               users.map((userItem) => (
                 <div
                   key={userItem._id}
                   className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow border border-gray-200 p-6 cursor-pointer"
-                  onClick={() => navigate("/add-user-to-project", { state: { user: userItem } })}
+                  onClick={() =>
+                    navigate("/add-user-to-project", {
+                      state: { user: userItem },
+                    })
+                  }
                 >
                   <div className="flex flex-col items-center text-center">
                     <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mb-4">
