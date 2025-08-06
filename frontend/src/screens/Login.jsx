@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../config/axios";
 import { UserContext } from "../context/user.context";
+import { toast } from 'react-toastify';
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -25,12 +26,15 @@ const Login = () => {
 
         localStorage.setItem("token", res.data.token);
         setUser(res.data.user);
-
+        
+        toast.success("Login successful! Welcome back!");
         navigate("/", { replace: true });
       })
       .catch((err) => {
         console.log(err.response.data);
-        setErrorMessage(err.response?.data?.message || "Login failed.");
+        const errorMsg = err.response?.data?.message || "Login failed.";
+        setErrorMessage(errorMsg);
+        toast.error(errorMsg);
       });
   };
 

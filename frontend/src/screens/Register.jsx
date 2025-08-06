@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../config/axios";
 import { UserContext } from "../context/user.context";
+import { toast } from 'react-toastify';
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -24,14 +25,15 @@ const Register = () => {
         console.log(res.data);
         localStorage.setItem("token", res.data.token);
         setUser(res.data.user);
+        
+        toast.success("Registration successful! Welcome to CodeMate!");
         navigate("/");
       })
       .catch((err) => {
         console.log(err.response.data);
-        setErrorMessage(
-          err.response?.data?.message ||
-            "An error occurred during registration."
-        );
+        const errorMsg = err.response?.data?.message || "An error occurred during registration.";
+        setErrorMessage(errorMsg);
+        toast.error(errorMsg);
       });
   };
 

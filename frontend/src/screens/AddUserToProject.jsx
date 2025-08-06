@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../config/axios";
 import { UserContext } from "../context/user.context";
+import { toast } from 'react-toastify';
 
 const AddUserToProject = () => {
   const location = useLocation();
@@ -34,11 +35,13 @@ const AddUserToProject = () => {
       })
       .then(() => {
         setLoading(false);
-        navigate(-1); // Go back
+        toast.success("User added to project successfully!");
+        navigate("/", { state: { activeTab: "users" } }); // Go back to Users section
       })
       .catch((err) => {
         setLoading(false);
-        alert("Failed to add user to project");
+        const errorMsg = err.response?.data?.message || "Failed to add user to project";
+        toast.error(errorMsg);
         console.log(err);
       });
   };
@@ -77,7 +80,7 @@ const AddUserToProject = () => {
           {loading ? "Adding..." : "Add to Project"}
         </button>
         <button
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/", { state: { activeTab: "users" } })}
           className="w-full mt-2 py-2 px-4 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition"
         >
           Cancel

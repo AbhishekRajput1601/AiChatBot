@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../context/user.context";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "../config/axios";
+import { toast } from 'react-toastify';
 
 const ProjectDetails = () => {
   const location = useLocation();
@@ -41,10 +42,12 @@ const ProjectDetails = () => {
         setProject({ ...project, description: description });
         setIsEditingDescription(false);
         setLoading(false);
+        toast.success("Description updated successfully!");
       })
       .catch((err) => {
         console.log(err);
         setLoading(false);
+        toast.error("Failed to update description. Please try again.");
       });
   };
 
@@ -64,10 +67,10 @@ const ProjectDetails = () => {
           <div className="flex items-center justify-between">
             <button
               onClick={() => navigate("/")}
-              className="flex items-center text-black hover:text-gray-800 transition-colors text-lg"
+              className="flex items-center text-black hover:text-blue-800 transition-colors text-lg "
             >
               <i className="ri-arrow-left-line mr-2 text-2xl"></i>
-            <strong> Back to Projects</strong> 
+             Back to Projects
             </button>
             <button
               onClick={startChat}

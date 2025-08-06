@@ -10,6 +10,7 @@ import {
 import Markdown from "markdown-to-jsx";
 import hljs from "highlight.js";
 import { getWebContainer } from "../config/webcontainer";
+import { toast } from 'react-toastify';
 
 function SyntaxHighlightedCode(props) {
   const ref = useRef(null);
@@ -76,6 +77,11 @@ const Project = () => {
   };
 
   function addCollaborators() {
+    if (selectedUserId.size === 0) {
+      toast.warning("Please select at least one user to add.");
+      return;
+    }
+    
     axios
       .put("/projects/add-user", {
         projectId: location.state.project._id,
@@ -84,14 +90,26 @@ const Project = () => {
       .then((res) => {
         console.log(res.data);
         setIsModalOpen(false);
+        setSelectedUserId(new Set());
         setUserChangeTrigger((prev) => !prev);
+        toast.success("Users added to project successfully!");
       })
       .catch((err) => {
         console.log(err);
+        toast.error("Failed to add users to project. Please try again.");
       });
   }
 
   function removeCollaborators() {
+    if (selectedUserIdToRemove.size === 0) {
+      toast.warning("Please select at least one user to remove.");
+      return;
+    }
+    
+    if (!window.confirm("Are you sure you want to remove selected users from this project?")) {
+      return;
+    }
+    
     axios
       .put("/projects/remove-user", {
         projectId: location.state.project._id,
@@ -100,10 +118,13 @@ const Project = () => {
       .then((res) => {
         console.log(res.data);
         setIsRemoveModalOpen(false);
+        setSelectedUserIdToRemove(new Set());
         setUserChangeTrigger((prev) => !prev);
+        toast.success("Users removed from project successfully!");
       })
       .catch((err) => {
         console.log(err);
+        toast.error("Failed to remove users from project. Please try again.");
       });
   }
 

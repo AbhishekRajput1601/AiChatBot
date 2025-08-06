@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import { UserContext } from "../context/user.context";
 import axios from "../config/axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 const Home = () => {
   const { user, setUser } = useContext(UserContext);
@@ -13,6 +14,7 @@ const Home = () => {
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   function createProject(e) {
     e.preventDefault();
@@ -27,9 +29,11 @@ const Home = () => {
         setIsModalOpen(false);
         setProjectName(""); // Clear the input field
         fetchProjects(); // Refresh the projects list
+        toast.success("Project created successfully!");
       })
       .catch((error) => {
         console.log(error);
+        toast.error("Failed to create project. Please try again.");
       });
   }
 
@@ -60,21 +64,28 @@ const Home = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     setUser(null);
+    toast.success("Logged out successfully!");
     navigate("/login");
   };
 
   const deleteProject = (projectId) => {
+    if (!window.confirm("Are you sure you want to delete this project?")) {
+      return;
+    }
+    
     axios
       .delete(`/projects/delete/${projectId}`)
       .then((res) => {
         console.log(res.data.message || "Project deleted successfully");
         fetchProjects(); // Refresh the projects list after deletion
+        toast.success("Project deleted successfully!");
       })
       .catch((err) => {
         console.error(
           "Error deleting project:",
           err.response?.data || err.message
         );
+        toast.error("Failed to delete project. Please try again.");
       });
   };
 
@@ -82,6 +93,13 @@ const Home = () => {
     fetchProjects();
     fetchUsers();
   }, []);
+
+  // Handle activeTab from navigation state
+  useEffect(() => {
+    if (location.state?.activeTab) {
+      setActiveTab(location.state.activeTab);
+    }
+  }, [location.state]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -295,8 +313,7 @@ const Home = () => {
                       {userItem.email}
                     </p>
                     <div className="flex items-center text-gray-500 text-xs">
-                      <i className="ri-circle-fill text-green-400 mr-2 text-xs"></i>
-                      <span>Active</span>
+                    
                     </div>
                   </div>
                 </div>
