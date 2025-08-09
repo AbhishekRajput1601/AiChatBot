@@ -25,6 +25,22 @@ const projectSchema = new mongoose.Schema({
     type: Object,
     default: {},
   },
+  messages: [
+    {
+      sender: {
+        type: mongoose.Schema.Types.Mixed, // Can be ObjectId or String for AI
+        required: true,
+      },
+      message: {
+        type: String,
+        required: true,
+      },
+      timestamp: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
 });
 
 const Project = mongoose.model("project", projectSchema);

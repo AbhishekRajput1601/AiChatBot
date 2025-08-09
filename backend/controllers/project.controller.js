@@ -232,3 +232,52 @@ export const updateDescription = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
+
+export const addMessageToProject = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  try {
+    const { projectId, message, senderId } = req.body;
+
+    // Use provided senderId or default to logged-in user
+    let finalSenderId = senderId;
+    if (!senderId) {
+      const loggedInUser = await userModel.findOne({
+        email: req.user.email,
+      });
+      finalSenderId = loggedInUser._id;
+    }
+
+    const project = await projectService.addMessageToProject({
+      projectId,
+      senderId: finalSenderId,
+      message,
+    });
+
+    return res.status(200).json({
+      project,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ error: err.message });
+  }
+};
+
+export const getProjectMessages = async (req, res) => {
+  const { projectId } = req.params;
+
+  try {
+    const messages = await projectService.getProjectMessages({ projectId });
+
+    return res.status(200).json({
+      messages,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ error: err.message });
+  }
+};

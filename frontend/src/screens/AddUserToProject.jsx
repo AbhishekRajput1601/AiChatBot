@@ -54,7 +54,9 @@ const AddUserToProject = () => {
           <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mb-2">
             <i className="ri-user-fill text-white text-2xl"></i>
           </div>
-          <div className="text-lg font-semibold">{selectedUser?.name || "Developer"}</div>
+          <div className="text-lg font-semibold">
+            {selectedUser?.name || selectedUser?.email?.split('@')[0] || "Developer"}
+          </div>
           <div className="text-gray-500 text-sm">{selectedUser?.email}</div>
         </div>
         <div className="mb-4">

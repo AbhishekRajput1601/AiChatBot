@@ -280,3 +280,94 @@ export const updateDescription = async ({ projectId, description }) => {
 
   return project;
 };
+
+export const addMessageToProject = async ({ projectId, senderId, message }) => {
+  if (!projectId) {
+    throw new Error("projectId is required");
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(projectId)) {
+    throw new Error("Invalid projectId");
+  }
+
+  if (!senderId) {
+    throw new Error("senderId is required");
+  }
+
+  if (!message) {
+    throw new Error("message is required");
+  }
+
+  const project = await projectModel.findOneAndUpdate(
+    {
+      _id: projectId,
+    },
+    {
+      $push: {
+        messages: {
+          sender: senderId, // Can be ObjectId or string (like "ai")
+          message: message,
+          timestamp: new Date(),
+        },
+      },
+    },
+    {
+      new: true,
+    }
+  );
+
+  return project;
+};
+
+export const getProjectMessages = async ({ projectId }) => {
+  if (!projectId) {
+    throw new Error("projectId is required");
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(projectId)) {
+    throw new Error("Invalid projectId");
+  }
+
+  const project = await projectModel
+    .findOne({ _id: projectId })
+    .select("messages");
+
+  if (!project) {
+    throw new Error("Project not found");
+  }
+
+  // Populate user details for messages where sender is ObjectId
+  const populatedProject = await projectModel.populate(project, {
+    path: "messages.sender",
+    match: { _id: { $exists: true } }, // Only populate if sender is ObjectId
+    select: "email name",
+  });
+
+  // Transform messages to include sender info
+  const transformedMessages = populatedProject.messages.map((msg) => {
+    if (msg.sender && typeof msg.sender === "object" && msg.sender._id) {
+      // Regular user message
+      return {
+        sender: {
+          _id: msg.sender._id,
+          email: msg.sender.email,
+          name: msg.sender.name,
+        },
+        message: msg.message,
+        timestamp: msg.timestamp,
+      };
+    } else {
+      // AI message or other special message
+      return {
+        sender: {
+          _id: msg.sender,
+          email: msg.sender === "ai" ? "AI Assistant" : "System",
+        },
+        message: msg.message,
+        timestamp: msg.timestamp,
+      };
+    }
+  });
+
+  return transformedMessages;
+};

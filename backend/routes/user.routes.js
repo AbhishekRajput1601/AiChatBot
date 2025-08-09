@@ -37,4 +37,15 @@ router.get(
   userController.getAllUsersController
 );
 
+router.put(
+  "/update-profile",
+  authMiddleware.authUser,
+  body("name").optional().trim().isLength({ max: 50 }).withMessage("Name must not be longer than 50 characters"),
+  body("role").optional().trim().isLength({ max: 50 }).withMessage("Role must not be longer than 50 characters"),
+  body("phone").optional().trim().isLength({ max: 15 }).withMessage("Phone number must not be longer than 15 characters"),
+  body("bio").optional().trim().isLength({ max: 200 }).withMessage("Bio must not be longer than 200 characters"),
+  body("skills").optional().isArray().withMessage("Skills must be an array"),
+  userController.updateProfileController
+);
+
 export default router;

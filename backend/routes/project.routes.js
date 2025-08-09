@@ -80,4 +80,18 @@ router.put(
   projectController.updateDescription
 );
 
+router.post(
+  "/add-message",
+  authMiddleWare.authUser,
+  body("projectId").isString().withMessage("Project ID is required"),
+  body("message").isString().withMessage("Message is required"),
+  projectController.addMessageToProject
+);
+
+router.get(
+  "/messages/:projectId",
+  authMiddleWare.authUser,
+  projectController.getProjectMessages
+);
+
 export default router;

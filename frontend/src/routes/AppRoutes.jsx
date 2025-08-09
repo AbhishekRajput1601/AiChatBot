@@ -6,6 +6,7 @@ import Home from "../screens/Home";
 import Project from "../screens/Project";
 import ProjectDetails from "../screens/ProjectDetails";
 import AddUserToProject from "../screens/AddUserToProject";
+import Profile from "../screens/Profile";
 import UserAuth from "../auth/UserAuth";
 import Logout from "../screens/Logout";
 import MemberList from "../screens/MemberList";
@@ -61,6 +62,14 @@ const AppRoutes = () => {
           element={
             <UserAuth>
               <AddUserToProject />
+            </UserAuth>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <UserAuth>
+              <Profile />
             </UserAuth>
           }
         />

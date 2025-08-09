@@ -17,6 +17,43 @@ const userSchema = new mongoose.Schema({
     type: String,
     select: false,
   },
+
+  name: {
+    type: String,
+    trim: true,
+    maxLength: [50, "Name must not be longer than 50 characters"],
+  },
+
+  role: {
+    type: String,
+    trim: true,
+    maxLength: [50, "Role must not be longer than 50 characters"],
+    default: "Developer",
+  },
+
+  phone: {
+    type: String,
+    trim: true,
+    maxLength: [15, "Phone number must not be longer than 15 characters"],
+  },
+
+  bio: {
+    type: String,
+    trim: true,
+    maxLength: [200, "Bio must not be longer than 200 characters"],
+  },
+
+  skills: [{
+    type: String,
+    trim: true,
+  }],
+
+  avatar: {
+    type: String,
+    trim: true,
+  },
+}, {
+  timestamps: true,
 });
 
 userSchema.statics.hashPassword = async function (password) {
@@ -28,7 +65,10 @@ userSchema.methods.isValidPassword = async function (password) {
 };
 
 userSchema.methods.generateJWT = function () {
-  return jwt.sign({ email: this.email }, process.env.JWT_SECRET, {
+  return jwt.sign({ 
+    email: this.email, 
+    _id: this._id 
+  }, process.env.JWT_SECRET, {
     expiresIn: "24h",
   });
 };
