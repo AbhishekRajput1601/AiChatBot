@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "../config/axios";
 import { UserContext } from "../context/user.context";
 import { toast } from 'react-toastify';
+import HomeNavbar from "./HomeNavbar";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -39,40 +40,8 @@ const Register = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50">
-      {/* Navbar */}
-      <nav className="bg-white shadow-lg border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo/Brand */}
-            <div className="flex items-center">
-              <Link to="/" className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg flex items-center justify-center">
-                  <i className="ri-code-s-slash-line text-white text-lg"></i>
-                </div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                  CodeMate
-                </h1>
-              </Link>
-            </div>
-
-            {/* Navigation Links */}
-            <div className="flex items-center space-x-4">
-              <Link
-                to="/login"
-                className="px-4 py-2 text-purple-600 font-medium hover:text-purple-700 transition-colors"
-              >
-                Login
-              </Link>
-              <Link
-                to="/register"
-                className="px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200 shadow-md hover:shadow-lg"
-              >
-                Sign Up
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+      {/* Reusable Navbar */}
+      <HomeNavbar user={null} />
 
       {/* Main Content */}
       <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] py-12 px-4">
