@@ -28,23 +28,15 @@ const HomeNavbar = ({ activeTab, setActiveTab, handleLogout, isUserDropdownOpen,
           {/* Navigation Links */}
           <div className="hidden md:flex items-center space-x-6">
             <button
-              onClick={() => setActiveTab && setActiveTab("projects")}
-              className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
-                activeTab === "projects"
-                  ? "bg-blue-100 text-blue-700 shadow-sm"
-                  : "text-gray-600 hover:text-blue-600 hover:bg-gray-50"
-              }`}
+              onClick={() => navigate("/projects")}
+              className="px-4 py-2 rounded-lg font-medium transition-all duration-200 text-gray-600 hover:text-blue-600 hover:bg-gray-50"
             >
               <i className="ri-folder-line mr-2"></i>
               Projects
             </button>
             <button
-              onClick={() => setActiveTab && setActiveTab("users")}
-              className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
-                activeTab === "users"
-                  ? "bg-blue-100 text-blue-700 shadow-sm"
-                  : "text-gray-600 hover:text-blue-600 hover:bg-gray-50"
-              }`}
+              onClick={() => navigate("/developers")}
+              className="px-4 py-2 rounded-lg font-medium transition-all duration-200 text-gray-600 hover:text-blue-600 hover:bg-gray-50"
             >
               <i className="ri-team-line mr-2"></i>
               Developers

@@ -3,6 +3,8 @@ import { Route, BrowserRouter, Routes } from "react-router-dom";
 import Login from "../screens/Login";
 import Register from "../screens/Register";
 import Home from "../screens/Home";
+import ProjectsPage from "../screens/ProjectsPage";
+import DevelopersPage from "../screens/DevelopersPage";
 import Project from "../screens/Project";
 import ProjectDetails from "../screens/ProjectDetails";
 import AddUserToProject from "../screens/AddUserToProject";
@@ -42,10 +44,18 @@ const AppRoutes = () => {
           }
         />
         <Route
-          path="/project"
+          path="/projects"
           element={
             <UserAuth>
-              <Project />
+              <ProjectsPage />
+            </UserAuth>
+          }
+        />
+        <Route
+          path="/developers"
+          element={
+            <UserAuth>
+              <DevelopersPage />
             </UserAuth>
           }
         />
@@ -54,6 +64,14 @@ const AppRoutes = () => {
           element={
             <UserAuth>
               <ProjectDetails />
+            </UserAuth>
+          }
+        />
+        <Route
+          path="/project"
+          element={
+            <UserAuth>
+              <Project />
             </UserAuth>
           }
         />

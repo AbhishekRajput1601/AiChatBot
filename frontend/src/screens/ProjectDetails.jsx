@@ -66,7 +66,7 @@ const ProjectDetails = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <button
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/projects")}
               className="flex items-center text-black hover:text-blue-800 transition-colors text-lg "
             >
               <i className="ri-arrow-left-line mr-2 text-2xl"></i>
@@ -166,17 +166,6 @@ const ProjectDetails = () => {
                   )}
                 </div>
               )}
-            </div>
-
-            {/* Start Chat Button - Center */}
-            <div className="flex justify-center">
-              <button
-                onClick={startChat}
-                className="px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl shadow-lg hover:from-blue-700 hover:to-blue-800 transition-all transform hover:scale-105 flex items-center text-lg font-semibold"
-              >
-                <i className="ri-chat-1-line mr-3 text-xl"></i>
-                Start Collaborative Chat
-              </button>
             </div>
           </div>
 
