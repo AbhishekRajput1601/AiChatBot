@@ -232,7 +232,7 @@ const Home = () => {
         <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-4">
           Collaborate, code, and create together. Manage your projects and connect with other developers in one place.
         </p>
-       <h2 className="text-lg text-gray-600 max-w-2xl mx-auto mb-4"> place where developers unite and collaborate together</h2>
+       <h2 className="text-lg text-gray-600 max-w-2xl mx-auto mb-4"> Place where developers unite and collaborate together</h2>
 
       </section>
 
