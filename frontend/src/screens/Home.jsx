@@ -230,74 +230,51 @@ const Home = () => {
       </nav>
 
       {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Welcome back, <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{user?.name || user?.email?.split('@')[0] || 'Developer'}</span>
-            </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              {activeTab === "projects" 
-                ? "Build amazing projects with your team. Collaborate, code, and create together." 
-                : "Connect with talented developers and grow your network."}
-            </p>
-          </div>
+      <section className="relative text-center py-20 px-4">
+        <h1 className="text-5xl font-bold text-gray-900 mb-6">
+          Welcome back,{" "}
+          <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            {user?.name || user?.email?.split('@')[0] || "Developer"}
+          </span>
+        </h1>
+        <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-4">
+          Collaborate, code, and create together. Manage your projects and connect with other developers in one place.
+        </p>
+       <h2 className="text-lg text-gray-600 max-w-2xl mx-auto mb-4"> place where developers unite and collaborate together</h2>
 
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-              <div className="flex items-center">
-                <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                  <i className="ri-folder-3-line text-2xl text-blue-600"></i>
-                </div>
-                <div className="ml-4">
-                  <h3 className="text-2xl font-bold text-gray-900">{projects.length}</h3>
-                  <p className="text-gray-600">Active Projects</p>
-                </div>
-              </div>
-            </div>
-            
-            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-              <div className="flex items-center">
-                <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                  <i className="ri-team-line text-2xl text-green-600"></i>
-                </div>
-                <div className="ml-4">
-                  <h3 className="text-2xl font-bold text-gray-900">{users.length}</h3>
-                  <p className="text-gray-600">Developers</p>
-                </div>
-              </div>
-            </div>
-            
-            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-              <div className="flex items-center">
-                <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
-                  <i className="ri-code-s-slash-line text-2xl text-purple-600"></i>
-                </div>
-                <div className="ml-4">
-                  <h3 className="text-2xl font-bold text-gray-900">
-                    {projects.reduce((total, project) => total + project.users.length, 0)}
-                  </h3>
-                  <p className="text-gray-600">Collaborations</p>
-                </div>
-              </div>
-            </div>
-          </div>
+      </section>
 
-          {/* Action Button */}
-          {activeTab === "projects" && (
-            <div className="text-center mb-8">
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200"
-              >
-                <i className="ri-add-line mr-3 text-xl"></i>
-                Create New Project
-              </button>
+      {/* Feature Section */}
+      <section className="max-w-6xl mx-auto px-4 py-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+        {[
+          {
+            icon: "ri-folder-line",
+            title: "Organize Projects",
+            desc: "Manage all your coding projects in one place with ease."
+          },
+          {
+            icon: "ri-team-line",
+            title: "Collaborate Easily",
+            desc: "Invite teammates and work together in real time."
+          },
+          {
+            icon: "ri-code-s-slash-line",
+            title: "Grow Skills",
+            desc: "Learn from others and improve your coding abilities."
+          }
+        ].map((feature, idx) => (
+          <div
+            key={idx}
+            className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-transform hover:-translate-y-2"
+          >
+            <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center mb-4">
+              <i className={`${feature.icon} text-white text-2xl`}></i>
             </div>
-          )}
-        </div>
-      </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">{feature.title}</h3>
+            <p className="text-gray-600">{feature.desc}</p>
+          </div>
+        ))}
+      </section>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
