@@ -47,9 +47,29 @@ const AddUserToProject = () => {
       });
   };
 
+  // Provide minimal state and handlers for HomeNavbar
+  const [activeTab, setActiveTab] = useState("");
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
+  // Custom setActiveTab to navigate to Home with correct tab
+  const setActiveTabAndNavigate = (tab) => {
+    navigate("/", { state: { activeTab: tab } });
+  };
+
   return (
     <>
-      <HomeNavbar user={user} />
+      <HomeNavbar
+        user={user}
+        activeTab={activeTab}
+        setActiveTab={setActiveTabAndNavigate}
+        handleLogout={handleLogout}
+        isUserDropdownOpen={isUserDropdownOpen}
+        setIsUserDropdownOpen={setIsUserDropdownOpen}
+      />
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-4">
         <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
           <h2 className="text-2xl font-bold mb-4 text-center">Add User to Project</h2>
