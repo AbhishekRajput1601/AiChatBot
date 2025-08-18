@@ -9,7 +9,7 @@ import {
 } from "../config/socket";
 import Markdown from "markdown-to-jsx";
 import hljs from "highlight.js";
-import { getWebContainer } from "../config/webcontainer";
+import { getWebContainer } from "../config/webContainer";
 import { toast } from 'react-toastify';
 
 function SyntaxHighlightedCode(props) {
