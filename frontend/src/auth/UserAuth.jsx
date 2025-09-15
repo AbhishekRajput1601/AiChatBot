@@ -9,18 +9,14 @@ const UserAuth = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!token) {
+    // If no token or no user, redirect to login, but always clear loading state
+    if (!token || !user) {
       navigate("/login");
-    }
-
-    if (user) {
       setLoading(false);
+      return;
     }
-
-    if (!user) {
-      navigate("/login");
-    }
-  }, []);
+    setLoading(false);
+  }, [token, user, navigate]);
 
   if (loading) {
     return <div>Loading...</div>;
