@@ -12,11 +12,16 @@ connect();
 
 const app = express();
 
-app.use(cors()); // allows all origins to access the server 
-app.use(morgan('dev')); // logs all requests to the console 
-app.use(express.json()); // parses incoming requests with JSON payloads meaning that it can parse JSON data in the body of the request
+
+app.use(cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+}));
+
+app.use(morgan('dev')); 
+app.use(express.json()); 
 app.use(express.urlencoded({ extended: true })); 
-app.use(cookieParser()); // parses cookies attached to the client request object
+app.use(cookieParser()); 
 
 app.use('/users', userRoutes);
 app.use('/projects', projectRoutes);
